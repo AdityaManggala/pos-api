@@ -1,0 +1,164 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "Order API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://localhost:8000",
+            "description": "Order API"
+        }
+    ],
+    "paths": {
+        "/api/orders": {
+            "get": {
+                "description": "Get all orders",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Authorization"
+                    },
+                    {
+                        "$ref": "#/components/parameters/OrderId"
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Orders"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create new order",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/Authorization"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/createOrUpdateOrderReqBody"
+                            }
+                        }
+                    }
+                },
+                "responses": {}
+            }
+        },
+        "/api/orders/{orderId}": {
+            "get": {
+                "description": "Get order by id",
+                "parameters": [],
+                "responses": {}
+            },
+            "put": {
+                "description": "Update order",
+                "parameters": [],
+                "requestBody": {},
+                "responses": {}
+            },
+            "delete": {
+                "description": "Delete order",
+                "parameters": [],
+                "responses": {}
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "createOrUpdateOrderReqBody": {
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "integer"
+                    },
+                    "employeeId": {
+                        "type": "integer"
+                    },
+                    "shipperId": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "Order": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "customerId": {
+                                "type": "integer"
+                            },
+                            "employeeId": {
+                                "type": "integer"
+                            },
+                            "shipperId": {
+                                "type": "integer"
+                            },
+                            "orderDate": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "errors": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Orders": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Order/properties/data"
+                        }
+                    },
+                    "errors": {
+                        "type": "object"
+                    },
+                    "meta": {
+                        "type": "object"
+                    }
+                }
+            }
+        },
+        "parameters": {
+            "Authorization": {
+                "in": "header",
+                "name": "Authorization",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "OrderId": {
+                "in": "path",
+                "name": "orderId",
+                "required": true,
+                "schema": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
